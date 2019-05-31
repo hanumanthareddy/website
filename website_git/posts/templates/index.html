@@ -1,0 +1,104 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'my_styles/additional_style.css' %}">
+<script src="{% static 'jquery/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<link href="{% static 'fontawesome/css/all.css' %}"> <!--load all styles -->
+<script defer src="{% static 'fontawesome/js/all.js' %}"></script> <!--load all styles -->
+<link rel="icon" href="{%  static 'images/logo_new.png' %}" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>hanumantha reddy</title>
+<style>
+body{
+    background-color: #37325b;
+    background-repeat: repeat;
+}
+a,a:hover{
+    text-decoration: none;
+}
+@media (min-width: 1200px){
+    .container {
+        max-width: 1350px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+</style>
+</head>
+<body>
+    <!--Start of Tawk.to Script-->
+<!-- <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/5bb1b7e7b033e9743d01e934/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+</script> -->
+<!--End of Tawk.to Script-->
+<nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
+  <a class="navbar-brand" href="/"><img style="margin-bottom:0px;height: 30px;" src="{%  static 'images/logo_new.png' %}"> Reddy Blog Post </a>
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navb">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navb">
+    <!-- <ul class="navbar-nav mr-auto"> 
+    </ul> -->
+    <!-- <button type="button" class="btn btn-light" style="margin-right: 20px;">SOLUTIONS</button>
+    <button type="button" class="btn btn-light" style="margin-right: 20px;">FAQ</button> -->
+    <div style="width: 75%;margin-left: 30px;margin-right: 30px;">
+        <form class="form-inline my-2 my-lg-0" method="GET" action="/">{% csrf_token %}
+            <input class="form-control col-md-12" type="text" name="q" placeholder="Search Your Issues ..." autofocus>
+        <!-- <button class="btn btn-success my-2 my-sm-0" type="button">Search</button> -->
+        </form>
+    </div>
+    <a href="/create" class="btn btn-primary" role="button"><i class="fas fa-plus"></i> Create Post</a>
+  </div>
+</nav>
+{% block content %}
+<br><br><br><br>
+    <div class="container">
+        {% for obj in object_list %}
+            <div class="jumbotron">
+                <div class="row">
+                    <div style="display:inline-block;" class="col-sm-3 col-sm-12 col-md-4">
+                        <a href='{% url "detail" id=obj.id %}'><img src="{{ obj.image.url }}" title="{{ obj.title }}" class="img-thumbnail img-fluid rounded" alt="{{ obj.title }}"></a>
+                    </div>
+                    <div style="display:inline-block;" class="col-sm-9 col-sm-12 col-md-8">
+                        <a href='{% url "detail" id=obj.id %}'><h4>{{ obj.title }}</h4></a>
+                        <p>{{ obj.content|safe|slice:":350" }}<a href='{% url "detail" id=obj.id %}'>  more</a></p>
+                        <strong><p>{{ obj.timestamp|timesince }} ago</p></strong>
+                        <a href="/{{ obj.id }}/update" class="btn btn-primary" role="button"><i class="fas fa-pencil-alt"></i>  Update</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <nav aria-label="...">
+            <ul class="pagination">
+                {% if object_list.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ object_list.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="#">{{ object_list.number }}</a></li>
+                {% if object_list.has_next %}
+                <li class="page-item">
+                <a class="page-link" href="?page={{ object_list.next_page_number }}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
+</body>
+</html>

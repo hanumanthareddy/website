@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% block content %}
+<br><br><br><br>
+<div class="container">
+    <div class="jumbotron">
+        <h1>{{ instance.title }}</h1>
+        <img class="img-fluid" src="{{ instance.image.url }}" alt="">
+        <p><br>{{ instance.content|safe }}</p>
+        <div style="float: right;"><p>Posted on: <strong>{{ instance.timestamp }}</strong></p></div>
+        <br>
+        <hr/>
+        <h2 style="color: #007bff;font-style: italic">Comments</h2>
+        {% for comment in comments %}
+        <div class="card" style="padding-bottom: 3px;margin-bottom: 10px;">
+            <div class="card-body">
+                <p class="card-text">{{ comment.content }}.</p>
+                <p class="card-text" style="font-family: 'Times New Roman', Times, serif;color: #007bff;font-style: italic">{{ comment.user }} | {{ comment.timestamp|timesince }} ago.</p>
+            </div>
+        </div>
+        {% endfor %}
+        <hr>
+        <form action="." method="POST">{% csrf_token %}
+            <div class="form-group">
+                {{ comment_form }}
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-comment"></i> Post comment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
